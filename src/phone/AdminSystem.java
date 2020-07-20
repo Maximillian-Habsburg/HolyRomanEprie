@@ -56,8 +56,8 @@ public class AdminSystem {
 				adminIstraion.adminIstraion();
 			}else{
 				System.out.println("登录失败，返回上一级");
-				AdminSystem adminSystem = new AdminSystem();
-				adminSystem.adminSystem();
+				Login login = new Login();
+				login.Login();
 			}
 		}catch (Exception e){
 			e.printStackTrace();

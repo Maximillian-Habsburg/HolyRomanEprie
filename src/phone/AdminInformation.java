@@ -27,8 +27,8 @@ public class AdminInformation {
 			adminInformationdelete.adminInformationdelete();
 		}else if(adminChange.equals("quit")){
 			//进入初始界面
-			Login login = new Login();
-			login.Login();
+			AdminIstraion adminIstraion = new AdminIstraion();
+			adminIstraion.adminIstraion();
 		}else{
 			System.err.println("请做出正确的输入！");
 			adminInformation();

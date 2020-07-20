@@ -1,12 +1,11 @@
 package phone;
-import java.sql.Date;
-public class Information {
+
+public class Order {
 	private String id;
 	private String phonename;
-	private String configure;
+	private String number;
 	private String price;
 	private String ts;
-	
 	public String getId() {
 		return id;
 	}
@@ -19,11 +18,11 @@ public class Information {
 	public void setPhonename(String phonename) {
 		this.phonename = phonename;
 	}
-	public String getConfigure() {
-		return configure;
+	public String getNumber() {
+		return number;
 	}
-	public void setConfigure(String configure) {
-		this.configure = configure;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 	public String getPrice() {
 		return price;
@@ -37,4 +36,6 @@ public class Information {
 	public void setTs(String ts) {
 		this.ts = ts;
 	}
+	
+	
 }

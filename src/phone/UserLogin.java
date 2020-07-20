@@ -53,6 +53,8 @@ public class UserLogin {
 			ResultSet res = ps.executeQuery();
 			if(res.next()){
 				System.out.println("登录成功，跳转到商店页面");
+				Useroption useroption = new Useroption();
+				useroption.useroption();
 			}else{
 				System.out.println("登录失败，返回上一级");
 				UserSystem userSystem = new UserSystem();

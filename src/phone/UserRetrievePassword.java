@@ -51,64 +51,35 @@ public class UserRetrievePassword {
 				
 			}
 		}
+		System.out.println("请输入重置后的密码：（6-16位）");
+		user.setPassword(userInput.nextLine().trim());
+		VerifyPassword verifyPassword = new VerifyPassword();
+		int verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
+		while(verifyPasswordNum == 0 || verifyPasswordNum == 1){
+			if(verifyPasswordNum == 0){
+				System.err.println("您输入的密码为空请重新输入！");
+				user.setPassword(userInput.nextLine().trim());
+				verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
+			}
+			if(verifyPasswordNum == 1){
+				System.err.println("您输入的密码长度不满足6-16位！");
+				user.setPassword(userInput.nextLine().trim());
+				verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
+			}
+		}
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/phone","root","123456");
-			String sql = "SELECT * FROM USER WHERE username=? and phone=?";
+			String sql = "UPDATE USER SET PASSWORD=? WHERE username=? and phone=?";
 			PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
-			ps.setString(1,user.getUsername());
-			ps.setString(2,user.getPhone());
-			ResultSet res = ps.executeQuery();
-			if(res.next()){
-				System.out.println("用户存在，请重置密码");
-				user.setPassword(userInput.nextLine().trim());
-				VerifyPassword verifyPassword = new VerifyPassword();
-				int verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-				while(verifyPasswordNum == 0 || verifyPasswordNum == 1){
-					if(verifyPasswordNum == 0){
-						System.err.println("您输入的密码为空请重新输入！");
-						user.setPassword(userInput.nextLine().trim());
-						verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-					}
-					if(verifyPasswordNum == 1){
-						System.err.println("您输入的密码长度不满足6-16位！");
-						user.setPassword(userInput.nextLine().trim());
-						verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-					}
-				}
-				System.out.println("请二次确认密码：");
-				String verifyConfirm = userInput.nextLine().trim();
-				while(!user.getPassword().equals(verifyConfirm)){
-					System.err.println("您输入的密码不一致请重新输入！");
-					user.setPassword(userInput.nextLine().trim());
-					verifyPassword = new VerifyPassword();
-					verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-					while(verifyPasswordNum == 0 || verifyPasswordNum == 1){
-						if(verifyPasswordNum == 0){
-							System.err.println("您输入的密码为空请重新输入！");
-							user.setPassword(userInput.nextLine().trim());
-							verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-						}
-						if(verifyPasswordNum == 1){
-							System.err.println("您输入的密码长度不满足6-16位！");
-							user.setPassword(userInput.nextLine().trim());
-							verifyPasswordNum = verifyPassword.verifyPassword(user.getPassword());
-						}
-					}
-					System.out.println("请二次确认密码：");
-					verifyConfirm = userInput.nextLine();
-				}
-				String sql1="UPDATE USER SET PASSWORD=? WHERE username=? and phone=?";
-				ps.setString(1,user.getPassword());
-				PreparedStatement ps1 = (PreparedStatement) con.prepareStatement(sql);
-				boolean res1 = ps.execute();
-				if(res1 == true){
-					System.out.println("密码重置成功，跳转到商店页面");
-				}else{
-					System.out.println("密码重置失败，返回上一级");
-					UserSystem userSystem = new UserSystem();
-					userSystem.userSystem();
-				}
+			ps.setString(1,user.getPassword());
+			ps.setString(2,user.getUsername());
+			ps.setString(3,user.getPhone());
+			int res = ps.executeUpdate();
+			if(res != 0){
+				System.out.println("用户存在，重置密码成功，跳转到登录页面");
+				UserSystem userSystem = new UserSystem();
+				userSystem.userSystem();
 			}else{
 				System.out.println("用户不存在，返回上一级");
 				UserSystem userSystem = new UserSystem();
